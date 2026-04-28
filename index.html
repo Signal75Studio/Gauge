@@ -1,3 +1,6 @@
+Index · HTML
+Copy
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,14 +24,14 @@
   a { color: inherit; text-decoration: none; }
   button { font-family: inherit; cursor: pointer; border: none; background: none; }
   input { font-family: inherit; }
-
+ 
   .font-display { font-family: 'Fraunces', Georgia, serif; font-feature-settings: 'ss01'; }
   .font-mono-tab { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum'; }
   .italic-light { font-style: italic; font-weight: 300; }
-
+ 
   .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
   @media (min-width: 1024px) { .container { padding: 0 48px; } }
-
+ 
   /* grain overlay */
   .grain {
     position: fixed;
@@ -38,7 +41,7 @@
     opacity: 0.04;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
   }
-
+ 
   /* animations */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(12px); }
@@ -65,7 +68,7 @@
   .delay-1 { animation-delay: 0.1s; }
   .delay-2 { animation-delay: 0.2s; }
   .delay-3 { animation-delay: 0.35s; }
-
+ 
   /* nav */
   nav.top {
     position: relative;
@@ -110,7 +113,7 @@
   }
   @media (min-width: 768px) { .nav-links { display: flex; } }
   .nav-links a:hover { color: #1c1917; }
-
+ 
   /* primary cta */
   .cta {
     background: #18181b;
@@ -126,7 +129,7 @@
   .cta:hover { background: #292524; transform: translateY(-1px); }
   .cta:active { transform: translateY(0); }
   .cta-lg { padding: 12px 24px; font-size: 16px; border-radius: 9999px; }
-
+ 
   /* hero */
   .hero { position: relative; z-index: 10; padding: 80px 0 96px; }
   .badge {
@@ -147,7 +150,7 @@
     background: #10b981;
     animation: pulse 2s infinite;
   }
-
+ 
   h1.hero-title {
     font-family: 'Fraunces', Georgia, serif;
     font-size: clamp(48px, 7vw, 110px);
@@ -159,7 +162,7 @@
   }
   .hero-title em { font-style: italic; font-weight: 300; }
   .hero-title .muted { color: #a8a29e; }
-
+ 
   .hero-sub {
     margin-top: 32px;
     font-size: 18px;
@@ -168,7 +171,7 @@
     line-height: 1.6;
   }
   @media (min-width: 768px) { .hero-sub { font-size: 20px; } }
-
+ 
   /* demo input */
   .demo-wrap { margin-top: 48px; max-width: 640px; }
   .demo-input-card {
@@ -192,7 +195,7 @@
   }
   .demo-input::placeholder { color: #a8a29e; }
   .demo-input:focus { outline: none; }
-
+ 
   .gauge-btn {
     background: #18181b;
     color: #fafaf9;
@@ -214,10 +217,10 @@
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
-
+ 
   .demo-error { margin-top: 12px; font-size: 14px; color: #dc2626; }
   .demo-hint { margin-top: 12px; font-size: 12px; color: #78716c; }
-
+ 
   /* loading skeleton */
   .skel-wrap { margin-top: 32px; max-width: 800px; }
   .skel-card {
@@ -235,7 +238,7 @@
     margin-bottom: 12px;
   }
   .skel-msg { margin-top: 24px; font-size: 14px; color: #78716c; }
-
+ 
   /* result card */
   .result-wrap { margin-top: 32px; max-width: 800px; }
   .result-card {
@@ -272,7 +275,7 @@
     text-transform: capitalize;
     text-align: right;
   }
-
+ 
   .headline-block {
     padding: 32px;
     background: rgba(245, 245, 244, 0.5);
@@ -287,7 +290,7 @@
     line-height: 1;
   }
   .headline-suffix { color: #78716c; margin-left: 12px; font-size: 16px; }
-
+ 
   .range-bar { margin-top: 32px; max-width: 480px; }
   .range-labels {
     display: flex;
@@ -316,7 +319,7 @@
     height: 16px;
     background: #18181b;
   }
-
+ 
   .meta-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -335,7 +338,7 @@
   }
   .meta-cell:last-child { border-bottom: none; }
   .meta-val { font-variant-numeric: tabular-nums; text-transform: capitalize; }
-
+ 
   .signals-block { padding: 24px 32px; border-top: 1px solid #f5f5f4; }
   .signals-list { list-style: none; padding: 0; margin: 0; }
   .signals-list li {
@@ -346,7 +349,7 @@
     margin-bottom: 8px;
   }
   .signals-list li::before { content: '·'; color: #a8a29e; }
-
+ 
   .flags-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -365,7 +368,7 @@
   .flag-label-red { color: #b91c1c; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px; }
   .flag-list { list-style: none; padding: 0; margin: 0; font-size: 14px; color: #44403c; }
   .flag-list li { margin-bottom: 8px; }
-
+ 
   /* social strip */
   .social-strip {
     border-top: 1px solid #e7e5e4;
@@ -387,7 +390,7 @@
     font-size: 22px;
   }
   .social-dot { color: #d6d3d1; }
-
+ 
   /* sections */
   section.block { position: relative; z-index: 10; padding: 128px 0; }
   .section-label {
@@ -407,7 +410,7 @@
     font-weight: 400;
   }
   .section-title em { font-style: italic; font-weight: 300; color: #a8a29e; }
-
+ 
   /* how it works */
   .steps {
     display: grid;
@@ -445,7 +448,7 @@
     font-weight: 400;
   }
   .step p { color: #57534e; line-height: 1.6; margin: 0; font-size: 15px; }
-
+ 
   /* dark math section */
   .dark-section {
     background: #18181b;
@@ -472,10 +475,10 @@
   }
   .math-cap { color: #a8a29e; margin-top: 8px; font-size: 15px; }
   .math-divider { height: 1px; background: #292524; margin-bottom: 40px; }
-
+ 
   .dark-section .section-label { color: #a8a29e; }
   .dark-section .section-title em { color: #57534e; }
-
+ 
   /* pricing */
   .price-grid {
     display: grid;
@@ -517,7 +520,7 @@
   }
   .price-tag { font-size: 14px; color: #78716c; margin-bottom: 32px; }
   .price-card.accent .price-tag { color: #a8a29e; }
-
+ 
   .price-amount {
     display: flex;
     align-items: baseline;
@@ -534,7 +537,7 @@
   }
   .price-amount .per { font-size: 14px; color: #78716c; }
   .price-card.accent .price-amount .per { color: #a8a29e; }
-
+ 
   .price-feats { list-style: none; padding: 0; margin: 0 0 40px; }
   .price-feats li {
     display: flex;
@@ -546,7 +549,7 @@
   .price-card.accent .price-feats li { color: #d6d3d1; }
   .price-feats svg { flex-shrink: 0; margin-top: 2px; color: #18181b; }
   .price-card.accent .price-feats svg { color: #fafaf9; }
-
+ 
   .price-btn {
     width: 100%;
     padding: 12px;
@@ -562,7 +565,7 @@
     color: #18181b;
   }
   .price-card.accent .price-btn:hover { background: #fff; }
-
+ 
   /* footer cta box */
   .footer-cta-box {
     background: #f5f5f4;
@@ -582,7 +585,7 @@
     font-weight: 400;
   }
   .footer-cta-title em { font-style: italic; font-weight: 300; }
-
+ 
   /* footer */
   footer {
     border-top: 1px solid #e7e5e4;
@@ -618,7 +621,7 @@
 </head>
 <body>
 <div class="grain"></div>
-
+ 
 <!-- nav -->
 <div class="container">
   <nav class="top">
@@ -629,12 +632,12 @@
     <div class="nav-links">
       <a href="#how">how it works</a>
       <a href="#pricing">pricing</a>
-      <a href="#">log in</a>
+      <a href="https://cal.com/signal75" target="_blank" rel="noopener">book a call</a>
       <button class="cta" onclick="scrollToDemo()">try it free</button>
     </div>
   </nav>
 </div>
-
+ 
 <!-- hero -->
 <section class="hero">
   <div class="container">
@@ -644,17 +647,17 @@
         built for agencies who hate guessing
       </div>
     </div>
-
+ 
     <h1 class="hero-title anim-fade-up delay-1">
       stop quoting <em>blind.</em><br />
       <span class="muted">price every prospect</span><br />
       like you know them.
     </h1>
-
+ 
     <p class="hero-sub anim-fade-up delay-2">
       Gauge reads a prospect's website and tells you what they can actually afford, then tells you what to charge them. 30 seconds. no more underbidding. no more losing deals to misreads.
     </p>
-
+ 
     <div id="demoAnchor" class="demo-wrap anim-fade-up delay-3">
       <div class="demo-input-card">
         <div class="demo-input-icon">
@@ -669,7 +672,7 @@
       <p id="demoError" class="demo-error" style="display:none;"></p>
       <p class="demo-hint">try a real prospect site. takes 15 to 30 seconds.</p>
     </div>
-
+ 
     <div id="skelWrap" class="skel-wrap" style="display:none;">
       <div class="skel-card">
         <div class="skel" style="width: 66%;"></div>
@@ -678,11 +681,11 @@
         <p class="skel-msg">fetching site, analyzing signals, estimating budget, calibrating retainer.</p>
       </div>
     </div>
-
+ 
     <div id="resultWrap" class="result-wrap" style="display:none;"></div>
   </div>
 </section>
-
+ 
 <!-- social strip -->
 <section class="social-strip">
   <div class="container">
@@ -704,13 +707,13 @@
     </div>
   </div>
 </section>
-
+ 
 <!-- how it works -->
 <section id="how" class="block">
   <div class="container">
     <p class="section-label">how it works</p>
     <h2 class="section-title">three steps. <em>no fluff.</em></h2>
-
+ 
     <div class="steps">
       <div class="step">
         <div class="step-head">
@@ -745,7 +748,7 @@
     </div>
   </div>
 </section>
-
+ 
 <!-- the math -->
 <section class="dark-section">
   <div class="container">
@@ -773,13 +776,13 @@
     </div>
   </div>
 </section>
-
+ 
 <!-- pricing -->
 <section id="pricing" class="block">
   <div class="container">
     <p class="section-label">pricing</p>
     <h2 class="section-title">three tiers. <em>cancel whenever.</em></h2>
-
+ 
     <div class="price-grid">
       <div class="price-card">
         <div class="price-head">
@@ -798,7 +801,7 @@
         </ul>
         <button class="price-btn">start free</button>
       </div>
-
+ 
       <div class="price-card accent">
         <div class="price-head">
           <h3 class="price-name">Studio</h3>
@@ -819,7 +822,7 @@
         </ul>
         <button class="price-btn">start 14 day trial</button>
       </div>
-
+ 
       <div class="price-card">
         <div class="price-head">
           <h3 class="price-name">Agency</h3>
@@ -837,23 +840,30 @@
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>custom signal weights</span></li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>priority support</span></li>
         </ul>
-        <button class="price-btn">talk to sales</button>
+        <a class="price-btn" href="https://cal.com/signal75" target="_blank" rel="noopener" style="display:inline-block; text-align:center; box-sizing:border-box;">talk to sales</a>
       </div>
     </div>
   </div>
 </section>
-
+ 
 <!-- footer cta -->
 <div class="container">
   <div class="footer-cta-box">
     <h2 class="footer-cta-title">quote your next deal <em>in the next ten minutes.</em></h2>
-    <button class="cta cta-lg" onclick="scrollToDemo()">
-      try Gauge free
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
+    <p style="color:#57534e; font-size: 16px; max-width: 540px; margin: 0 0 32px; line-height: 1.6;">try the demo on a real prospect, or book 15 minutes with us to see how agencies are using Gauge in their pipeline.</p>
+    <div style="display:flex; flex-wrap:wrap; gap: 12px;">
+      <button class="cta cta-lg" onclick="scrollToDemo()">
+        try Gauge free
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <a class="cta-lg" href="https://cal.com/signal75" target="_blank" rel="noopener" style="background: transparent; color: #18181b; border: 1.5px solid #18181b; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s, color 0.2s;" onmouseover="this.style.background='#18181b'; this.style.color='#fafaf9';" onmouseout="this.style.background='transparent'; this.style.color='#18181b';">
+        book a 15 min call
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </a>
+    </div>
   </div>
 </div>
-
+ 
 <!-- footer -->
 <footer>
   <div class="container">
@@ -866,23 +876,23 @@
       <div class="footer-links">
         <a href="#">privacy</a>
         <a href="#">terms</a>
-        <a href="#">contact</a>
+        <a href="https://cal.com/signal75" target="_blank" rel="noopener">contact</a>
         <span>© 2026</span>
       </div>
     </div>
   </div>
 </footer>
-
+ 
 <script>
 function scrollToDemo() {
   document.getElementById('demoAnchor').scrollIntoView({ behavior: 'smooth', block: 'center' });
   setTimeout(() => document.getElementById('urlInput').focus(), 600);
 }
-
+ 
 document.getElementById('urlInput').addEventListener('keydown', (e) => {
   if (e.key === 'Enter') runGauge();
 });
-
+ 
 function setLoading(isLoading) {
   const btn = document.getElementById('gaugeBtn');
   const label = document.getElementById('btnLabel');
@@ -901,13 +911,13 @@ function setLoading(isLoading) {
     skel.style.display = 'none';
   }
 }
-
+ 
 function showError(msg) {
   const el = document.getElementById('demoError');
   el.textContent = msg;
   el.style.display = msg ? 'block' : 'none';
 }
-
+ 
 async function runGauge() {
   const input = document.getElementById('urlInput');
   let url = input.value.trim();
@@ -918,7 +928,7 @@ async function runGauge() {
   if (!url.startsWith('http')) url = 'https://' + url;
   showError('');
   setLoading(true);
-
+ 
   try {
     let siteContext = '';
     try {
@@ -935,14 +945,14 @@ async function runGauge() {
     } catch (e) {
       siteContext = '(could not fetch site directly, reason about the business from the url alone)';
     }
-
+ 
     const prompt = `You are a pricing analyst for a marketing services agency. A prospect just came in. Based on their website, estimate their business size and recommend what to charge them.
-
+ 
 PROSPECT URL: ${url}
-
+ 
 SITE CONTENT (raw text excerpt):
 ${siteContext}
-
+ 
 Analyze and respond with ONLY a valid JSON object (no markdown, no backticks, no preamble) in this exact shape:
 {
   "businessName": "short business name pulled from site",
@@ -960,9 +970,9 @@ Analyze and respond with ONLY a valid JSON object (no markdown, no backticks, no
   "redFlags": ["any reasons to charge less or walk away, or empty array"],
   "greenFlags": ["any reasons to charge more, or empty array"]
 }
-
+ 
 Be realistic and grounded. Don't invent specifics you didn't see in the site content. If the site content is sparse, lean lower confidence.`;
-
+ 
     const resp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -972,7 +982,7 @@ Be realistic and grounded. Don't invent specifics you didn't see in the site con
         messages: [{ role: 'user', content: prompt }]
       })
     });
-
+ 
     if (!resp.ok) throw new Error('api ' + resp.status);
     const data = await resp.json();
     const text = (data.content || [])
@@ -981,7 +991,7 @@ Be realistic and grounded. Don't invent specifics you didn't see in the site con
       .join('')
       .replace(/```json|```/g, '')
       .trim();
-
+ 
     const parsed = JSON.parse(text);
     renderResult(parsed);
   } catch (e) {
@@ -991,11 +1001,11 @@ Be realistic and grounded. Don't invent specifics you didn't see in the site con
     setLoading(false);
   }
 }
-
+ 
 function fmt(n) {
   return Number(n || 0).toLocaleString();
 }
-
+ 
 function renderResult(r) {
   const wrap = document.getElementById('resultWrap');
   const low = r.recommendedRetainer?.low || 0;
@@ -1003,13 +1013,13 @@ function renderResult(r) {
   const ceiling = r.recommendedRetainer?.ceiling || 0;
   const range = ceiling - low;
   const markerLeft = range > 0 ? ((target - low) / range) * 100 : 50;
-
+ 
   const reasoning = (r.reasoning || []).map(x => `<li>${escapeHtml(x)}</li>`).join('');
   const greens = r.greenFlags || [];
   const reds = r.redFlags || [];
   const hasGreen = greens.length > 0;
   const hasRed = reds.length > 0;
-
+ 
   let flagsHtml = '';
   if (hasGreen || hasRed) {
     const cellClass = (hasGreen && hasRed) ? 'has-two' : '';
@@ -1022,7 +1032,7 @@ function renderResult(r) {
     }
     flagsHtml = `<div class="flags-grid ${cellClass}">${cells}</div>`;
   }
-
+ 
   wrap.innerHTML = `
     <div class="result-card anim-fade-in">
       <div class="result-head">
@@ -1036,7 +1046,7 @@ function renderResult(r) {
           <p class="size-text">${escapeHtml(r.sizeIndicator || '')}</p>
         </div>
       </div>
-
+ 
       <div class="headline-block">
         <p class="label-tiny">recommended retainer</p>
         <div>
@@ -1054,7 +1064,7 @@ function renderResult(r) {
           </div>
         </div>
       </div>
-
+ 
       <div class="meta-grid">
         <div class="meta-cell">
           <p class="label-tiny">est. revenue</p>
@@ -1069,18 +1079,18 @@ function renderResult(r) {
           <p class="meta-val">${escapeHtml(r.confidence || '')}</p>
         </div>
       </div>
-
+ 
       <div class="signals-block">
         <p class="label-tiny">why we read it this way</p>
         <ul class="signals-list">${reasoning}</ul>
       </div>
-
+ 
       ${flagsHtml}
     </div>
   `;
   wrap.style.display = 'block';
 }
-
+ 
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
