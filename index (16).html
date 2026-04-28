@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gauge, priced like you know them.</title>
+<meta name="description" content="Gauge reads a prospect's website and tells you what to charge them. Built for agencies and freelancers who hate guessing." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Geist', 'Inter', system-ui, -apple-system, sans-serif;
+    background: #fafaf9;
+    color: #1c1917;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+  input { font-family: inherit; }
+
+  .font-display { font-family: 'Fraunces', Georgia, serif; font-feature-settings: 'ss01'; }
+  .font-mono-tab { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum'; }
+  .italic-light { font-style: italic; font-weight: 300; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  @media (min-width: 1024px) { .container { padding: 0 48px; } }
+
+  /* grain overlay */
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
+  }
+
+  /* animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .anim-fade-up { animation: fadeUp 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+  .anim-fade-in { animation: fadeIn 0.6s ease-out both; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.35s; }
+
+  /* nav */
+  nav.top {
+    position: relative;
+    z-index: 10;
+    padding-top: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid #18181b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo-mark::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #18181b;
+    border-radius: 50%;
+  }
+  .logo-text {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+  }
+  .nav-links {
+    display: none;
+    align-items: center;
+    gap: 32px;
+    font-size: 14px;
+    color: #57534e;
+  }
+  @media (min-width: 768px) { .nav-links { display: flex; } }
+  .nav-links a:hover { color: #1c1917; }
+
+  /* primary cta */
+  .cta {
+    background: #18181b;
+    color: #fafaf9;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    font-size: 14px;
+    transition: transform 0.2s, background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cta:hover { background: #292524; transform: translateY(-1px); }
+  .cta:active { transform: translateY(0); }
+  .cta-lg { padding: 12px 24px; font-size: 16px; border-radius: 9999px; }
+
+  /* hero */
+  .hero { position: relative; z-index: 10; padding: 80px 0 96px; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    background: rgba(231, 229, 228, 0.6);
+    font-size: 12px;
+    color: #57534e;
+    margin-bottom: 32px;
+  }
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    animation: pulse 2s infinite;
+  }
+
+  h1.hero-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(48px, 7vw, 110px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    margin: 0;
+    max-width: 1100px;
+    font-weight: 400;
+  }
+  .hero-title em { font-style: italic; font-weight: 300; }
+  .hero-title .muted { color: #a8a29e; }
+
+  .hero-sub {
+    margin-top: 32px;
+    font-size: 18px;
+    color: #57534e;
+    max-width: 640px;
+    line-height: 1.6;
+  }
+  @media (min-width: 768px) { .hero-sub { font-size: 20px; } }
+
+  /* demo input */
+  .demo-wrap { margin-top: 48px; max-width: 640px; }
+  .demo-input-card {
+    background: #fff;
+    border: 1px solid #e7e5e4;
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 8px 24px -12px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .demo-input-icon { padding-left: 12px; color: #a8a29e; display: flex; align-items: center; }
+  .demo-input {
+    flex: 1;
+    padding: 12px 8px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: #1c1917;
+  }
+  .demo-input::placeholder { color: #a8a29e; }
+  .demo-input:focus { outline: none; }
+
+  .gauge-btn {
+    background: #18181b;
+    color: #fafaf9;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .gauge-btn:hover { background: #292524; transform: translateY(-1px); }
+  .gauge-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .demo-error { margin-top: 12px; font-size: 14px; color: #dc2626; }
+  .demo-hint { margin-top: 12px; font-size: 12px; color: #78716c; }
+
+  /* loading skeleton */
+  .skel-wrap { margin-top: 32px; max-width: 800px; }
+  .skel-card {
+    background: #fff;
+    border: 1px solid #e7e5e4;
+    border-radius: 16px;
+    padding: 32px;
+  }
+  .skel {
+    height: 16px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #f5f5f4 0%, #e7e5e4 50%, #f5f5f4 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    margin-bottom: 12px;
+  }
+  .skel-msg { margin-top: 24px; font-size: 14px; color: #78716c; }
+
+  /* result card */
+  .result-wrap { margin-top: 32px; max-width: 800px; }
+  .result-card {
+    background: #fff;
+    border: 1px solid #e7e5e4;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 24px 48px -24px rgba(0,0,0,0.18);
+  }
+  .result-head {
+    padding: 32px 32px 24px;
+    border-bottom: 1px solid #f5f5f4;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .label-tiny {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #a8a29e;
+    margin-bottom: 8px;
+  }
+  .biz-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 28px;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .biz-cat { color: #78716c; margin-top: 4px; font-size: 14px; }
+  .size-text {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px;
+    text-transform: capitalize;
+    text-align: right;
+  }
+
+  .headline-block {
+    padding: 32px;
+    background: rgba(245, 245, 244, 0.5);
+    background-image: radial-gradient(circle, #d6d3d1 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .headline-num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 64px;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .headline-suffix { color: #78716c; margin-left: 12px; font-size: 16px; }
+
+  .range-bar { margin-top: 32px; max-width: 480px; }
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #78716c;
+    margin-bottom: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+  .range-track {
+    position: relative;
+    height: 4px;
+    background: #e7e5e4;
+    border-radius: 9999px;
+  }
+  .range-fill {
+    position: absolute;
+    inset: 0;
+    background: #18181b;
+    border-radius: 9999px;
+  }
+  .range-marker {
+    position: absolute;
+    top: -8px;
+    width: 2px;
+    height: 16px;
+    background: #18181b;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-top: 1px solid #f5f5f4;
+  }
+  @media (min-width: 768px) {
+    .meta-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  .meta-cell {
+    padding: 20px 32px;
+    border-bottom: 1px solid #f5f5f4;
+  }
+  @media (min-width: 768px) {
+    .meta-cell { border-bottom: none; border-right: 1px solid #f5f5f4; }
+    .meta-cell:last-child { border-right: none; }
+  }
+  .meta-cell:last-child { border-bottom: none; }
+  .meta-val { font-variant-numeric: tabular-nums; text-transform: capitalize; }
+
+  .signals-block { padding: 24px 32px; border-top: 1px solid #f5f5f4; }
+  .signals-list { list-style: none; padding: 0; margin: 0; }
+  .signals-list li {
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+    color: #44403c;
+    margin-bottom: 8px;
+  }
+  .signals-list li::before { content: '·'; color: #a8a29e; }
+
+  .flags-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-top: 1px solid #f5f5f4;
+  }
+  @media (min-width: 768px) {
+    .flags-grid.has-two { grid-template-columns: 1fr 1fr; }
+  }
+  .flag-cell { padding: 24px 32px; border-bottom: 1px solid #f5f5f4; }
+  .flag-cell:last-child { border-bottom: none; }
+  @media (min-width: 768px) {
+    .flags-grid.has-two .flag-cell { border-bottom: none; border-right: 1px solid #f5f5f4; }
+    .flags-grid.has-two .flag-cell:last-child { border-right: none; }
+  }
+  .flag-label-green { color: #047857; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px; }
+  .flag-label-red { color: #b91c1c; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px; }
+  .flag-list { list-style: none; padding: 0; margin: 0; font-size: 14px; color: #44403c; }
+  .flag-list li { margin-bottom: 8px; }
+
+  /* social strip */
+  .social-strip {
+    border-top: 1px solid #e7e5e4;
+    border-bottom: 1px solid #e7e5e4;
+    background: #fff;
+    position: relative;
+    z-index: 10;
+  }
+  .social-strip-inner { padding: 32px 0; text-align: center; }
+  .social-cities {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px 48px;
+    color: #78716c;
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: 22px;
+  }
+  .social-dot { color: #d6d3d1; }
+
+  /* sections */
+  section.block { position: relative; z-index: 10; padding: 128px 0; }
+  .section-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #78716c;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(36px, 5vw, 64px);
+    letter-spacing: -0.02em;
+    margin: 0 0 80px;
+    max-width: 720px;
+    line-height: 1.05;
+    font-weight: 400;
+  }
+  .section-title em { font-style: italic; font-weight: 300; color: #a8a29e; }
+
+  /* how it works */
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: #e7e5e4;
+    border: 1px solid #e7e5e4;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .steps { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  .step {
+    background: #fafaf9;
+    padding: 40px;
+  }
+  .step-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  .step-n {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variant-numeric: tabular-nums;
+    color: #d6d3d1;
+    font-size: 24px;
+  }
+  .step-icon { color: #a8a29e; }
+  .step h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px;
+    margin: 0 0 12px;
+    font-weight: 400;
+  }
+  .step p { color: #57534e; line-height: 1.6; margin: 0; font-size: 15px; }
+
+  /* dark math section */
+  .dark-section {
+    background: #18181b;
+    color: #fafaf9;
+    position: relative;
+    z-index: 10;
+  }
+  .dark-section .container { padding-top: 128px; padding-bottom: 128px; }
+  .math-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  @media (min-width: 1024px) {
+    .math-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .math-list > div { margin-bottom: 40px; }
+  .math-num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variant-numeric: tabular-nums;
+    font-size: 64px;
+    line-height: 1;
+  }
+  .math-cap { color: #a8a29e; margin-top: 8px; font-size: 15px; }
+  .math-divider { height: 1px; background: #292524; margin-bottom: 40px; }
+
+  .dark-section .section-label { color: #a8a29e; }
+  .dark-section .section-title em { color: #57534e; }
+
+  /* pricing */
+  .price-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  @media (min-width: 768px) {
+    .price-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  .price-card {
+    background: #fff;
+    border: 1px solid #e7e5e4;
+    border-radius: 16px;
+    padding: 40px;
+  }
+  .price-card.accent {
+    background: #18181b;
+    color: #fafaf9;
+    border-color: #18181b;
+  }
+  .price-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .price-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px;
+    margin: 0;
+    font-weight: 400;
+  }
+  .price-pop {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 9999px;
+    background: #fafaf9;
+    color: #18181b;
+  }
+  .price-tag { font-size: 14px; color: #78716c; margin-bottom: 32px; }
+  .price-card.accent .price-tag { color: #a8a29e; }
+
+  .price-amount {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 32px;
+  }
+  .price-amount .cur { font-size: 14px; color: #78716c; }
+  .price-card.accent .price-amount .cur { color: #a8a29e; }
+  .price-amount .num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variant-numeric: tabular-nums;
+    font-size: 64px;
+    line-height: 1;
+  }
+  .price-amount .per { font-size: 14px; color: #78716c; }
+  .price-card.accent .price-amount .per { color: #a8a29e; }
+
+  .price-feats { list-style: none; padding: 0; margin: 0 0 40px; }
+  .price-feats li {
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+    color: #44403c;
+    margin-bottom: 12px;
+  }
+  .price-card.accent .price-feats li { color: #d6d3d1; }
+  .price-feats svg { flex-shrink: 0; margin-top: 2px; color: #18181b; }
+  .price-card.accent .price-feats svg { color: #fafaf9; }
+
+  .price-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    background: #18181b;
+    color: #fafaf9;
+    transition: background 0.2s;
+  }
+  .price-btn:hover { background: #292524; }
+  .price-card.accent .price-btn {
+    background: #fafaf9;
+    color: #18181b;
+  }
+  .price-card.accent .price-btn:hover { background: #fff; }
+
+  /* footer cta box */
+  .footer-cta-box {
+    background: #f5f5f4;
+    border-radius: 24px;
+    padding: 80px 48px;
+    background-image: radial-gradient(circle, #d6d3d1 1px, transparent 1px);
+    background-size: 24px 24px;
+    margin-bottom: 128px;
+  }
+  .footer-cta-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(36px, 5vw, 56px);
+    letter-spacing: -0.02em;
+    margin: 0 0 24px;
+    max-width: 720px;
+    line-height: 1.05;
+    font-weight: 400;
+  }
+  .footer-cta-title em { font-style: italic; font-weight: 300; }
+
+  /* footer */
+  footer {
+    border-top: 1px solid #e7e5e4;
+    position: relative;
+    z-index: 10;
+  }
+  .footer-inner {
+    padding: 48px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  @media (min-width: 768px) {
+    .footer-inner { flex-direction: row; align-items: center; }
+  }
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-tag { color: #a8a29e; font-size: 14px; margin-left: 8px; }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-size: 14px;
+    color: #78716c;
+  }
+  .footer-links a:hover { color: #1c1917; }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<!-- nav -->
+<div class="container">
+  <nav class="top">
+    <div class="logo">
+      <div class="logo-mark"></div>
+      <span class="logo-text">Gauge</span>
+    </div>
+    <div class="nav-links">
+      <a href="#how">how it works</a>
+      <a href="#pricing">pricing</a>
+      <a href="#">log in</a>
+      <button class="cta" onclick="scrollToDemo()">try it free</button>
+    </div>
+  </nav>
+</div>
+
+<!-- hero -->
+<section class="hero">
+  <div class="container">
+    <div class="anim-fade-up">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        built for agencies who hate guessing
+      </div>
+    </div>
+
+    <h1 class="hero-title anim-fade-up delay-1">
+      stop quoting <em>blind.</em><br />
+      <span class="muted">price every prospect</span><br />
+      like you know them.
+    </h1>
+
+    <p class="hero-sub anim-fade-up delay-2">
+      Gauge reads a prospect's website and tells you what they can actually afford, then tells you what to charge them. 30 seconds. no more underbidding. no more losing deals to misreads.
+    </p>
+
+    <div id="demoAnchor" class="demo-wrap anim-fade-up delay-3">
+      <div class="demo-input-card">
+        <div class="demo-input-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <input id="urlInput" class="demo-input" type="text" placeholder="paste any business url, e.g. fetchwarwick.com" />
+        <button id="gaugeBtn" class="gauge-btn" onclick="runGauge()">
+          <span id="btnLabel">gauge it</span>
+          <svg id="btnArrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <p id="demoError" class="demo-error" style="display:none;"></p>
+      <p class="demo-hint">try a real prospect site. takes 15 to 30 seconds.</p>
+    </div>
+
+    <div id="skelWrap" class="skel-wrap" style="display:none;">
+      <div class="skel-card">
+        <div class="skel" style="width: 66%;"></div>
+        <div class="skel" style="width: 50%;"></div>
+        <div class="skel" style="width: 75%;"></div>
+        <p class="skel-msg">fetching site, analyzing signals, estimating budget, calibrating retainer.</p>
+      </div>
+    </div>
+
+    <div id="resultWrap" class="result-wrap" style="display:none;"></div>
+  </div>
+</section>
+
+<!-- social strip -->
+<section class="social-strip">
+  <div class="container">
+    <div class="social-strip-inner">
+      <p class="label-tiny" style="text-align:center; margin-bottom: 16px;">trusted by independent shops in</p>
+      <div class="social-cities">
+        <span>new york</span>
+        <span class="social-dot">·</span>
+        <span>london</span>
+        <span class="social-dot">·</span>
+        <span>paris</span>
+        <span class="social-dot">·</span>
+        <span>los angeles</span>
+        <span class="social-dot">·</span>
+        <span>miami</span>
+        <span class="social-dot">·</span>
+        <span>berlin</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- how it works -->
+<section id="how" class="block">
+  <div class="container">
+    <p class="section-label">how it works</p>
+    <h2 class="section-title">three steps. <em>no fluff.</em></h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-head">
+          <span class="step-n">01</span>
+          <span class="step-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </span>
+        </div>
+        <h3>paste a url</h3>
+        <p>their website is a budget tell. tech stack, polish, content depth, ticket prices, social linkage. we read it all.</p>
+      </div>
+      <div class="step">
+        <div class="step-head">
+          <span class="step-n">02</span>
+          <span class="step-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </span>
+        </div>
+        <h3>we read the signals</h3>
+        <p>site quality, content depth, offerings, scale cues. cross referenced against thousands of similar businesses with known revenue.</p>
+      </div>
+      <div class="step">
+        <div class="step-head">
+          <span class="step-n">03</span>
+          <span class="step-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          </span>
+        </div>
+        <h3>price with confidence</h3>
+        <p>a target retainer, a floor, a ceiling. plus the receipts so you can defend it on the call.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- the math -->
+<section class="dark-section">
+  <div class="container">
+    <div class="math-grid">
+      <div>
+        <p class="section-label">the math</p>
+        <h2 class="section-title">one missed quote<br /><em>costs you a year.</em></h2>
+      </div>
+      <div class="math-list">
+        <div>
+          <div class="math-num">$8,400</div>
+          <p class="math-cap">average revenue lost per under quoted retainer over 12 months.</p>
+        </div>
+        <div class="math-divider"></div>
+        <div>
+          <div class="math-num">37%</div>
+          <p class="math-cap">of agency proposals lose to a competitor who priced it right, not better.</p>
+        </div>
+        <div class="math-divider"></div>
+        <div>
+          <div class="math-num">30s</div>
+          <p class="math-cap">the time it takes Gauge to fix this for you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- pricing -->
+<section id="pricing" class="block">
+  <div class="container">
+    <p class="section-label">pricing</p>
+    <h2 class="section-title">three tiers. <em>cancel whenever.</em></h2>
+
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-head">
+          <h3 class="price-name">Solo</h3>
+        </div>
+        <p class="price-tag">free forever</p>
+        <div class="price-amount">
+          <span class="cur">$</span>
+          <span class="num">0</span>
+          <span class="per">/mo</span>
+        </div>
+        <ul class="price-feats">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>5 gauges per month</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>basic retainer suggestions</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>single user</span></li>
+        </ul>
+        <button class="price-btn">start free</button>
+      </div>
+
+      <div class="price-card accent">
+        <div class="price-head">
+          <h3 class="price-name">Studio</h3>
+          <span class="price-pop">popular</span>
+        </div>
+        <p class="price-tag">most agencies start here</p>
+        <div class="price-amount">
+          <span class="cur">$</span>
+          <span class="num">49</span>
+          <span class="per">/mo</span>
+        </div>
+        <ul class="price-feats">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>unlimited gauges</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>team workspace, 5 seats</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>export to PDF and notion</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>historical pricing log</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>CRM ready exports</span></li>
+        </ul>
+        <button class="price-btn">start 14 day trial</button>
+      </div>
+
+      <div class="price-card">
+        <div class="price-head">
+          <h3 class="price-name">Agency</h3>
+        </div>
+        <p class="price-tag">for shops doing real volume</p>
+        <div class="price-amount">
+          <span class="cur">$</span>
+          <span class="num">199</span>
+          <span class="per">/mo</span>
+        </div>
+        <ul class="price-feats">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>everything in Studio</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>unlimited seats</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>API access</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>custom signal weights</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>priority support</span></li>
+        </ul>
+        <button class="price-btn">talk to sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- footer cta -->
+<div class="container">
+  <div class="footer-cta-box">
+    <h2 class="footer-cta-title">quote your next deal <em>in the next ten minutes.</em></h2>
+    <button class="cta cta-lg" onclick="scrollToDemo()">
+      try Gauge free
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- footer -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <div class="logo-mark" style="width:24px; height:24px;"></div>
+        <span class="logo-text" style="font-size:20px;">Gauge</span>
+        <span class="footer-tag">priced like you know them.</span>
+      </div>
+      <div class="footer-links">
+        <a href="#">privacy</a>
+        <a href="#">terms</a>
+        <a href="#">contact</a>
+        <span>© 2026</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function scrollToDemo() {
+  document.getElementById('demoAnchor').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => document.getElementById('urlInput').focus(), 600);
+}
+
+document.getElementById('urlInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') runGauge();
+});
+
+function setLoading(isLoading) {
+  const btn = document.getElementById('gaugeBtn');
+  const label = document.getElementById('btnLabel');
+  const arrow = document.getElementById('btnArrow');
+  const skel = document.getElementById('skelWrap');
+  btn.disabled = isLoading;
+  if (isLoading) {
+    label.textContent = 'reading';
+    arrow.outerHTML = '<span id="btnArrow" class="spinner"></span>';
+    skel.style.display = 'block';
+    document.getElementById('resultWrap').style.display = 'none';
+  } else {
+    label.textContent = 'gauge it';
+    const old = document.getElementById('btnArrow');
+    if (old) old.outerHTML = '<svg id="btnArrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    skel.style.display = 'none';
+  }
+}
+
+function showError(msg) {
+  const el = document.getElementById('demoError');
+  el.textContent = msg;
+  el.style.display = msg ? 'block' : 'none';
+}
+
+async function runGauge() {
+  const input = document.getElementById('urlInput');
+  let url = input.value.trim();
+  if (!url) {
+    showError('drop a url first');
+    return;
+  }
+  if (!url.startsWith('http')) url = 'https://' + url;
+  showError('');
+  setLoading(true);
+
+  try {
+    let siteContext = '';
+    try {
+      const proxy = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+      const r = await fetch(proxy);
+      const d = await r.json();
+      const html = d.contents || '';
+      siteContext = html
+        .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+        .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .slice(0, 6000);
+    } catch (e) {
+      siteContext = '(could not fetch site directly, reason about the business from the url alone)';
+    }
+
+    const prompt = `You are a pricing analyst for a marketing services agency. A prospect just came in. Based on their website, estimate their business size and recommend what to charge them.
+
+PROSPECT URL: ${url}
+
+SITE CONTENT (raw text excerpt):
+${siteContext}
+
+Analyze and respond with ONLY a valid JSON object (no markdown, no backticks, no preamble) in this exact shape:
+{
+  "businessName": "short business name pulled from site",
+  "category": "what kind of business (e.g. boutique fitness studio, craft cocktail bar)",
+  "sizeIndicator": "small | mid | established | enterprise",
+  "monthlyRevenueEstimate": "low end to high end (e.g. $15k to $40k)",
+  "marketingBudgetEstimate": "low end to high end (e.g. $1k to $3k)",
+  "recommendedRetainer": {
+    "low": 800,
+    "target": 1500,
+    "ceiling": 2500
+  },
+  "confidence": "low | medium | high",
+  "reasoning": ["bullet 1, one specific signal you saw", "bullet 2", "bullet 3"],
+  "redFlags": ["any reasons to charge less or walk away, or empty array"],
+  "greenFlags": ["any reasons to charge more, or empty array"]
+}
+
+Be realistic and grounded. Don't invent specifics you didn't see in the site content. If the site content is sparse, lean lower confidence.`;
+
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!resp.ok) throw new Error('api ' + resp.status);
+    const data = await resp.json();
+    const text = (data.content || [])
+      .filter(b => b.type === 'text')
+      .map(b => b.text)
+      .join('')
+      .replace(/```json|```/g, '')
+      .trim();
+
+    const parsed = JSON.parse(text);
+    renderResult(parsed);
+  } catch (e) {
+    console.error(e);
+    showError('something broke. try a different url or try again.');
+  } finally {
+    setLoading(false);
+  }
+}
+
+function fmt(n) {
+  return Number(n || 0).toLocaleString();
+}
+
+function renderResult(r) {
+  const wrap = document.getElementById('resultWrap');
+  const low = r.recommendedRetainer?.low || 0;
+  const target = r.recommendedRetainer?.target || 0;
+  const ceiling = r.recommendedRetainer?.ceiling || 0;
+  const range = ceiling - low;
+  const markerLeft = range > 0 ? ((target - low) / range) * 100 : 50;
+
+  const reasoning = (r.reasoning || []).map(x => `<li>${escapeHtml(x)}</li>`).join('');
+  const greens = r.greenFlags || [];
+  const reds = r.redFlags || [];
+  const hasGreen = greens.length > 0;
+  const hasRed = reds.length > 0;
+
+  let flagsHtml = '';
+  if (hasGreen || hasRed) {
+    const cellClass = (hasGreen && hasRed) ? 'has-two' : '';
+    let cells = '';
+    if (hasGreen) {
+      cells += `<div class="flag-cell"><p class="flag-label-green">push higher</p><ul class="flag-list">${greens.map(g => `<li>${escapeHtml(g)}</li>`).join('')}</ul></div>`;
+    }
+    if (hasRed) {
+      cells += `<div class="flag-cell"><p class="flag-label-red">walk carefully</p><ul class="flag-list">${reds.map(g => `<li>${escapeHtml(g)}</li>`).join('')}</ul></div>`;
+    }
+    flagsHtml = `<div class="flags-grid ${cellClass}">${cells}</div>`;
+  }
+
+  wrap.innerHTML = `
+    <div class="result-card anim-fade-in">
+      <div class="result-head">
+        <div>
+          <p class="label-tiny">the read</p>
+          <h3 class="biz-name">${escapeHtml(r.businessName || 'unnamed business')}</h3>
+          <p class="biz-cat">${escapeHtml(r.category || '')}</p>
+        </div>
+        <div>
+          <p class="label-tiny" style="text-align:right;">size</p>
+          <p class="size-text">${escapeHtml(r.sizeIndicator || '')}</p>
+        </div>
+      </div>
+
+      <div class="headline-block">
+        <p class="label-tiny">recommended retainer</p>
+        <div>
+          <span class="headline-num">$${fmt(target)}</span>
+          <span class="headline-suffix">/mo target</span>
+        </div>
+        <div class="range-bar">
+          <div class="range-labels">
+            <span>floor $${fmt(low)}</span>
+            <span>ceiling $${fmt(ceiling)}</span>
+          </div>
+          <div class="range-track">
+            <div class="range-fill"></div>
+            <div class="range-marker" style="left: ${markerLeft}%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-cell">
+          <p class="label-tiny">est. revenue</p>
+          <p class="meta-val">${escapeHtml(r.monthlyRevenueEstimate || '')}/mo</p>
+        </div>
+        <div class="meta-cell">
+          <p class="label-tiny">est. mkt budget</p>
+          <p class="meta-val">${escapeHtml(r.marketingBudgetEstimate || '')}/mo</p>
+        </div>
+        <div class="meta-cell">
+          <p class="label-tiny">confidence</p>
+          <p class="meta-val">${escapeHtml(r.confidence || '')}</p>
+        </div>
+      </div>
+
+      <div class="signals-block">
+        <p class="label-tiny">why we read it this way</p>
+        <ul class="signals-list">${reasoning}</ul>
+      </div>
+
+      ${flagsHtml}
+    </div>
+  `;
+  wrap.style.display = 'block';
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+</script>
+</body>
+</html>
